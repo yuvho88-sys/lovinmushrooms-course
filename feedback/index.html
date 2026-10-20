@@ -370,7 +370,10 @@ $("optinBtn").addEventListener("click", function () {
     .catch(function () { btn.disabled = false; err.textContent = "לא הצלחנו לשמור. נסו שוב."; });
 });
 
-show(1, true);
+// ?p=<מפתח מוצר> מגיע מהמייל (שדה מותאם באיש הקשר בוויקס): הקורס כבר מסומן, ומתחילים משלב 2.
+var preset = qs.get("p");
+if (preset && PRODUCTS.some(function (x) { return x.key === preset; })) { $("p-" + preset).checked = true; show(2, true); }
+else show(1, true);
 </script>
 </body>
 </html>
