@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>איך היה לכם? · להתאהב בפטריות</title>
+<!-- 19/10/2026: טופס המשוב לבוגרים, לפי "מסע משוב בעולם הפטריות" (מסכים 2 עד 5) ו"פרומפט לקלוד קוד" (צ׳אט ג׳יפיטי, 19/10).
+     שמות הקורסים: האירועים של חורף 2025–2026 מוויקס (תוויות אנשי הקשר בייצוא 06/09/2026). הלוגו: הסמל מהטמפלט של המעצב.
+     מהמייל מגיעים עם ?r=<מזהה רשומה באיירטייבל>&s=mail. ENDPOINT ריק = מצב תצוגה, שום דבר לא נשלח. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@900&family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* מסך טלפון אחד על שמנת, בצבעי המיתוג של מיא, לפי הסקיצה. ערכת צבע אחת בכוונה. */
+:root{
+  color-scheme:light;
+  --cream:#f4efea; --paper:#fffdfb; --sand:#f0e4d9; --line:#e2d7cf;
+  --ink:#2a1210; --muted:#735d55; --orange:#e8614a; --orange-deep:#cf4d37;
+  --green:#124512; --mist:#d4dede;
+  --title:"Publico Banner Hebrew","Frank Ruhl Libre",Georgia,serif;
+  --body:"Simpler","Assistant",Arial,sans-serif;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--cream);color:var(--ink);font:400 17px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+.page{min-height:100vh;display:flex;flex-direction:column}
+.wrap{width:100%;max-width:480px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-block:16px 8px;flex:1}
+
+.head{display:flex;align-items:center;justify-content:space-between}
+.menu{display:grid;place-items:center;width:40px;height:40px;color:var(--ink)}
+.menu svg{width:26px;height:26px}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.logo img{width:40px;height:40px}
+.logo span{font:900 16px/1 var(--title)}
+
+.progress{display:flex;align-items:center;margin:26px 0 24px;padding:0 6px;list-style:none}
+.progress li{display:flex;align-items:center;flex:1}
+.progress li:last-child{flex:none}
+.dot{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font:700 15px/1 var(--body);border:1.5px solid var(--line);background:var(--paper);color:var(--muted);flex:none;transition:background .2s,color .2s,border-color .2s}
+.dot svg{width:15px;height:15px}
+.bar{height:2px;flex:1;background:var(--line);margin-inline:6px;transition:background .2s}
+.progress li.done .dot,.progress li.now .dot{background:var(--green);border-color:var(--green);color:#fff}
+.progress li.done .bar{background:var(--green)}
+
+h1{font:900 30px/1.2 var(--title);margin:0 0 10px;text-wrap:balance;text-align:center}
+.lead{margin:0 0 20px;color:var(--ink);text-align:center;font-size:16px;text-wrap:balance}
+
+.options{display:grid;gap:10px;margin:0 0 22px;padding:0;border:0}
+.opt{display:flex;align-items:center;gap:14px;padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);cursor:pointer;transition:border-color .15s,background .15s}
+.opt input{width:22px;height:22px;accent-color:var(--green);flex:none;margin:0}
+.opt .t{flex:1;min-width:0}
+.opt .t b{display:block;font:700 16px/1.3 var(--body)}
+.opt .t small{display:block;color:var(--muted);font-size:14px}
+.opt img{width:58px;height:58px;border-radius:10px;object-fit:cover;flex:none}
+.opt:has(input:checked){background:var(--sand);border-color:var(--sand)}
+
+.scale{display:flex;gap:8px;justify-content:center;margin:14px 0 4px;padding:0;border:0}
+.scale label{position:relative}
+.scale input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.scale span{display:grid;place-items:center;width:52px;height:52px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);font:600 20px/1 var(--body);transition:all .15s}
+.scale input:checked+span{background:var(--green);border-color:var(--green);color:#fff}
+.scale input:focus-visible+span{outline:3px solid var(--orange);outline-offset:2px}
+.hint{text-align:center;color:var(--ink);font-size:15px;margin:0;line-height:1.5}
+
+.sep{border:0;border-top:1px solid var(--line);margin:24px 0}
+.field{display:grid;gap:12px;margin:0 0 20px}
+.field label,.q{font:900 22px/1.25 var(--title);text-align:center;text-wrap:balance;margin:0}
+textarea{width:100%;min-height:92px;resize:vertical;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);font:400 16px/1.5 var(--body);color:var(--ink)}
+textarea::placeholder{color:#a8958c}
+textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(18,69,18,.12)}
+
+.choices{display:grid;gap:10px;margin:0 0 20px;padding:0;border:0}
+.choices legend{padding:0;margin:0 0 14px;width:100%}
+.choice{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);cursor:pointer;font-size:16px}
+.choice input{width:20px;height:20px;margin:0;accent-color:var(--green);flex:none}
+.choice:has(input:checked){border-color:var(--green)}
+.choice.consent{align-items:flex-start}
+.choice.consent input{margin-top:3px}
+.choice b{display:block;font:700 15.5px/1.35 var(--body)}
+.choice small{display:block;color:var(--muted);font-size:13.5px;line-height:1.45;margin-top:3px}
+.more{display:grid;gap:6px;margin:-2px 0 2px;padding:0 4px}
+.more label{font:600 14.5px/1.3 var(--body);color:var(--ink)}
+.more input{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);font:400 16px/1.4 var(--body);color:var(--ink);text-align:right}
+.more input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(18,69,18,.12)}
+.privacy{font-size:12.5px;line-height:1.5;color:var(--muted);text-align:center;margin:14px 0 0}
+.privacy a{color:var(--ink)}
+.optin{background:var(--sand);border-radius:14px;padding:18px 16px;margin:0 0 24px;display:grid;gap:12px;text-align:center}
+.optin .oq{font:900 21px/1.25 var(--title);margin:0;text-wrap:balance}
+.optin small{color:var(--muted);font-size:13px;line-height:1.45}
+.optin .more{text-align:right}
+.thanks .err{color:#b3341f;margin:0}
+.optin-done{font:700 17px/1.4 var(--body);color:var(--green);margin:0 0 24px}
+.quote{display:flex;align-items:flex-start;gap:12px;margin:0 0 20px;cursor:pointer}
+.quote input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--green);flex:none}
+.quote b{display:block;font:700 15.5px/1.35 var(--body)}
+.quote small{display:block;color:var(--muted);font-size:14px}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 20px;border:0;border-radius:12px;background:var(--orange);color:#fff;font:700 19px/1 var(--body);cursor:pointer;text-decoration:none;transition:background .15s,transform .1s}
+.btn:hover{background:var(--orange-deep)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn svg{width:20px;height:20px}
+.btn.soft{background:var(--sand);color:var(--ink);max-width:260px;margin:0 auto}
+.btn.soft:hover{background:#e7d6c8}
+.err{color:#b3341f;font-size:14.5px;text-align:center;margin:10px 0 0}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+[tabindex="-1"]:focus{outline:none}
+
+.thanks{text-align:center;padding-top:22px}
+.thanks .shroom{width:96px;height:96px;margin:0 auto 18px;display:block}
+.thanks h1{font-size:40px;line-height:1.15}
+.thanks p{color:var(--ink);margin:0 auto 22px;max-width:28ch;text-wrap:balance}
+.heart{width:24px;height:24px;margin:0 auto 26px;display:block}
+.social{display:flex;justify-content:center;gap:14px;margin:0 0 26px}
+.social a{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:var(--sand);color:var(--green);transition:background .15s,color .15s}
+.social a:hover{background:var(--orange);color:#fff}
+.social svg{width:24px;height:24px}
+
+.foot{margin-top:28px;position:relative}
+.foot svg{display:block;width:100%;height:auto}
+.foot .tag{position:absolute;left:max(24px,env(safe-area-inset-left,0px));bottom:16px;margin:0;font:600 10.5px/1.7 var(--body);letter-spacing:.2em;color:#2f4a3e;text-align:left;direction:ltr}
+.foot .fill{background:var(--mist);height:18px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+<main class="wrap">
+  <header class="head">
+    <a class="menu" href="https://www.lovinmushrooms.com" target="_blank" rel="noopener" aria-label="לאתר של להתאהב בפטריות"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
+    <a class="logo" href="https://www.lovinmushrooms.com" target="_blank" rel="noopener"><img src="assets/logo-emblem.png" alt=""><span>להתאהב<br>בפטריות</span></a>
+  </header>
+
+  <ol class="progress" id="progress" aria-label="שלבים">
+    <li><span class="dot">1</span><span class="bar"></span></li>
+    <li><span class="dot">2</span><span class="bar"></span></li>
+    <li><span class="dot">3</span><span class="bar"></span></li>
+    <li><span class="dot">4</span></li>
+  </ol>
+
+  <form id="f" novalidate>
+    <!-- מסך 2 בסקיצה: בחירת קורס -->
+    <section data-step="1">
+      <h1>באיזה קורס השתתפת?</h1>
+      <p class="lead">בחרו את הקורס שלכם</p>
+      <fieldset class="options" id="products"><legend hidden>הקורס</legend></fieldset>
+      <button type="button" class="btn" id="next1">להמשך <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <p class="err" id="err1" role="alert"></p>
+    </section>
+
+    <!-- מסך 3 בסקיצה: דירוג ושתי שאלות -->
+    <section data-step="2" hidden>
+      <h1>איך הייתם מדרגים<br>את החוויה שלכם?</h1>
+      <p class="hint">1 – פחות התחברתי<br>5 – הייתה חוויה נהדרת.</p>
+      <fieldset class="scale" dir="ltr" id="scale">
+        <legend hidden>דירוג מ-1 עד 5</legend>
+        <label><input type="radio" name="rating" id="r1" value="1"><span>1</span></label>
+        <label><input type="radio" name="rating" id="r2" value="2"><span>2</span></label>
+        <label><input type="radio" name="rating" id="r3" value="3"><span>3</span></label>
+        <label><input type="radio" name="rating" id="r4" value="4"><span>4</span></label>
+        <label><input type="radio" name="rating" id="r5" value="5"><span>5</span></label>
+      </fieldset>
+      <hr class="sep">
+      <div class="field">
+        <label for="moment">איזה רגע נשאר איתכם<br>במיוחד?</label>
+        <textarea id="moment" name="moment" placeholder="ספרו בקצרה…"></textarea>
+      </div>
+      <div class="field">
+        <label for="change">מה הייתם משנים<br>או משפרים?</label>
+        <textarea id="change" name="change" placeholder="מה יכול היה להיות טוב יותר?"></textarea>
+      </div>
+      <button type="button" class="btn" id="next2">להמשך <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <p class="err" id="err2" role="alert"></p>
+    </section>
+
+    <!-- מסך 4 בסקיצה: תיאור לחבר, השתתפות עתידית, ואישור הציטוט מהפרומפט -->
+    <section data-step="3" hidden>
+      <div class="field">
+        <label for="describe">איך הייתם מתארים<br>את הקורס לחבר או חברה?</label>
+        <textarea id="describe" name="describe" placeholder="בכמה מילים, מה הייתם מספרים?"></textarea>
+      </div>
+      <hr class="sep">
+      <fieldset class="choices">
+        <legend class="q">האם תרצו להשתתף<br>גם בקורסים או סדנאות עתידיים?</legend>
+        <label class="choice consent" for="updates"><input type="checkbox" id="updates" name="updates" value="yes"><span id="updatesText"><b>כן, אשמח שמיא תעדכן אותי במייל על קורסים, סיורים וסדנאות חדשים</b><small>עדכונים שיווקיים מ"להתאהב בפטריות". אפשר להסיר בכל מייל בלחיצה.</small></span></label>
+        <div class="more" id="emailBox" hidden><label for="email">המייל שלכם</label><input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="name@example.com" dir="ltr"></div>
+        <label class="choice consent" for="wa"><input type="checkbox" id="wa" name="wa" value="yes"><span id="waText"><b>אשמח לקבל את העדכונים גם בוואטסאפ</b><small>למספר שאמסור כאן. בכל הודעה אפשר להשיב "הסר".</small></span></label>
+        <div class="more" id="phoneBox" hidden><label for="phone">נייד לוואטסאפ</label><input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="050-0000000" dir="ltr"></div>
+      </fieldset>
+      <label class="quote" for="quote">
+        <input type="checkbox" id="quote" name="quote" value="yes">
+        <span><b>אישור אופציונלי להשתמש בציטוט מהמשוב</b><small>ניתן להשתמש בתשובה שלי כציטוט (ללא שם מלא)</small></span>
+      </label>
+      <button type="submit" class="btn" id="send">לשלוח את המשוב <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <p class="err" id="err3" role="alert"></p>
+      <p class="privacy">את התשובות אוספת מיא גינזבורג, "להתאהב בפטריות", כדי לשפר את המפגשים הבאים. פרטים ב<a href="https://course.lovinmushrooms.com/privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</p>
+    </section>
+
+    <!-- מסך 5 בסקיצה: תודה -->
+    <section data-step="4" class="thanks" hidden>
+      <svg class="shroom" viewBox="0 0 96 96" aria-hidden="true"><g fill="none" stroke="#e8614a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 46c2-18 16-30 34-30s32 12 34 30c-22 5-46 5-68 0z"/><path d="M40 50c-2 14-4 24-8 34h32c-4-10-6-20-8-34"/><path d="M30 32l5-3M48 25h6M64 33l-4-3M38 40l3-1"/><path d="M48 84c-6-6-14-6-20-2M48 84c6-6 14-6 20-2"/></g></svg>
+      <h1>תודה רבה<br>על השיתוף!</h1>
+      <p>המשוב שלכם עוזר לי לשפר את הקורסים הבאים ולבנות חוויות טובות עוד יותר.</p>
+      <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.5-9.3C1.1 8.4 3.1 5 6.6 5c2 0 3.6 1.1 4.4 2.6h2C13.8 6.1 15.4 5 17.4 5c3.5 0 5.5 3.4 4.1 6.7C19.5 16.4 12 21 12 21z" fill="#e8614a"/></svg>
+      <div class="optin" id="optin" hidden>
+        <p class="oq">רוצים לשמוע ראשונים על העונה הבאה?</p>
+        <div class="more" id="emailBox2" hidden><label for="email2">המייל שלכם</label><input type="email" id="email2" name="email2" autocomplete="email" inputmode="email" placeholder="name@example.com" dir="ltr"></div>
+        <button type="button" class="btn" id="optinBtn">כן, תעדכני אותי</button>
+        <small id="optinText">עדכונים שיווקיים מ"להתאהב בפטריות" במייל. אפשר להסיר בכל מייל בלחיצה.</small>
+        <p class="err" id="err4" role="alert"></p>
+      </div>
+      <p class="optin-done" id="optinDone" hidden>מעולה, אתם ברשימה.</p>
+      <nav class="social" aria-label="להתאהב בפטריות ברשתות">
+        <a href="https://www.instagram.com/lovinmushrooms/" target="_blank" rel="noopener" aria-label="אינסטגרם"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg></a>
+        <a href="https://www.facebook.com/lovinmushroom/" target="_blank" rel="noopener" aria-label="פייסבוק"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 21v-7.6h2.6l.4-3h-3V8.5c0-.9.3-1.5 1.5-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8.5v3h2.6V21z" fill="currentColor"/></svg></a>
+        <a href="https://wa.me/972546432041" target="_blank" rel="noopener" aria-label="וואטסאפ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9.1 7.9c-.3 0-.6.1-.8.4-.3.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.8 2.2.9 2.6.7 3.1.6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3l-1.7-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2-1.2-.7-.7-1.2-1.5-1.4-1.7-.1-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4z" fill="currentColor"/></svg></a>
+      </nav>
+      <a class="btn soft" href="https://www.lovinmushrooms.com" target="_blank" rel="noopener">חזרה לאתר</a>
+    </section>
+  </form>
+</main>
+
+<footer class="foot">
+  <svg viewBox="0 0 600 120" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <path d="M0 62C80 40 150 72 240 60S400 32 480 50s92 14 120 4V120H0z" fill="#d4dede"/>
+    <g fill="none" stroke="#124512" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M430 92c2-22 18-36 40-36s38 14 40 36c-26 5-54 5-80 0z"/><path d="M462 97c-1 9-3 16-7 22M478 97c1 9 3 16 5 22"/>
+      <path d="M446 76l5-3M468 66l6-1M492 76l-4-3"/>
+      <path d="M520 98c2-14 12-23 26-23s24 9 26 23c-16 3-36 3-52 0z"/><path d="M541 101c-1 6-2 11-4 18M551 101c1 6 2 11 3 18"/>
+      <path d="M370 104c1-10 8-17 18-17s17 7 18 17c-11 2-25 2-36 0z"/><path d="M385 106c0 5-1 9-3 13M392 106c0 5 1 9 2 13"/>
+    </g>
+  </svg>
+  <p class="tag" id="tag" hidden>MORE MUSHROOMS<br>DEEPER CONNECTIONS<br>TOGETHER AGAIN</p>
+  <div class="fill"></div>
+</footer>
+</div>
+
+<script>
+// כתובת הקליטה: האוטומציה "טופס המשוב · קליטה" באיירטייבל של מיא (wfl1C0PdEnajeLrFz). ריק = תצוגה: לא נשלח כלום.
+var ENDPOINT = "https://hooks.airtable.com/workflows/v1/genericWebhook/appX9Glwa2yQmggqV/wfl1C0PdEnajeLrFz/wtrSSKR3qaJXkxSHI";
+var CONSENT_VERSION = "משוב-הסכמה-19-10-v1";
+
+// האירועים של חורף 2025–2026 בוויקס, בשמות שלהם שם.
+var PRODUCTS = [
+  { key: "culinary-course",    name: "קורס פטריות – ליקוט וקולינריה",       sub: "חורף 2025–2026", img: "assets/thumb-course.jpg" },
+  { key: "family-tour",        name: "סיור לכל המשפחה עם מיא",              sub: "חורף 2025–2026", img: "assets/thumb-tour.jpg" },
+  { key: "intro-workshop",     name: "סדנת מבוא למבוגרים ונוער עם מיא",     sub: "חורף 2025–2026", img: "assets/thumb-workshop.jpg" },
+  { key: "intro-course",       name: "קורס מבוא לממלכת הפטריות",            sub: "חורף 2025–2026", img: "assets/thumb-mini.jpg" },
+  { key: "psychedelic-course", name: "קורס פטריות מרפא והחוויה הפסיכדלית", sub: "חורף 2025–2026", img: "assets/thumb-other.jpg" }
+];
+
+var form = document.getElementById("f");
+var steps = form.querySelectorAll("section[data-step]");
+var dots = document.querySelectorAll("#progress li");
+var qs = new URLSearchParams(location.search);
+// רק מזהה רשומה תקין של איירטייבל נחשב קישור אישי. כל דבר אחר נקלט כ"בלי קישור" ונרשם בחריגים.
+var rec = /^rec[A-Za-z0-9]{14}$/.test(qs.get("r") || "") ? qs.get("r") : "";
+var state = { record: rec, source: qs.get("s") || (rec ? "mail" : "direct") };
+
+var box = document.getElementById("products");
+PRODUCTS.forEach(function (p) {
+  var id = "p-" + p.key;
+  var l = document.createElement("label");
+  l.className = "opt"; l.htmlFor = id;
+  l.innerHTML = '<input type="radio" name="product" id="' + id + '" value="' + p.key + '"><span class="t"><b></b><small></small></span><img src="' + p.img + '" alt="">';
+  l.querySelector("b").textContent = p.name;
+  l.querySelector("small").textContent = p.sub;
+  box.appendChild(l);
+});
+
+var CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function show(n, first) {
+  steps.forEach(function (s) { s.hidden = Number(s.dataset.step) !== n; });
+  dots.forEach(function (li, i) {
+    var k = i + 1, dot = li.querySelector(".dot");
+    li.className = k < n || n === 4 ? "done" : (k === n ? "now" : "");
+    dot.innerHTML = k < n && n !== 4 ? CHECK : String(k);
+  });
+  document.getElementById("tag").hidden = n !== 4;
+  if (first) return;
+  form.closest(".page").scrollIntoView({ behavior: "smooth", block: "start" });
+  var h = form.querySelector('section[data-step="' + n + '"] h1, section[data-step="' + n + '"] label[for="describe"]');
+  if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+}
+function picked(name) { return form.querySelector('input[name="' + name + '"]:checked'); }
+function $(id) { return document.getElementById(id); }
+function text(id) { return Array.prototype.map.call($(id).childNodes, function (n) { return n.textContent; }).join(" ").replace(/\s+/g, " ").trim(); }
+function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+function e164(v) { var d = v.replace(/\D/g, ""); if (d.indexOf("972") === 0) d = d.slice(3); if (d.charAt(0) === "0") d = d.slice(1); return /^5\d{8}$/.test(d) ? "972" + d : ""; }
+function post(body) {
+  window.__lastPayload = Object.fromEntries(body);
+  if (!ENDPOINT) { console.log("[משוב] תצוגה, לא נשלח", window.__lastPayload); return Promise.resolve(); }
+  // איירטייבל לא מחזיר כותרת CORS, ולכן no-cors: הבקשה נקלטת, אבל התשובה לא קריאה. נכשל רק כשאין רשת.
+  return fetch(ENDPOINT, { method: "POST", mode: "no-cors", body: body });
+}
+// המייל נדרש רק ממי שהגיע בלי קישור אישי. מהקישור במייל כבר ידוע מי זה.
+$("updates").addEventListener("change", function () { $("emailBox").hidden = !(this.checked && !state.record); });
+$("wa").addEventListener("change", function () { $("phoneBox").hidden = !this.checked; });
+
+document.getElementById("next1").addEventListener("click", function () {
+  var ok = picked("product");
+  document.getElementById("err1").textContent = ok ? "" : "בחרו את הקורס שלכם.";
+  if (ok) show(2);
+});
+document.getElementById("next2").addEventListener("click", function () {
+  var ok = picked("rating");
+  document.getElementById("err2").textContent = ok ? "" : "בחרו מספר מ-1 עד 5.";
+  if (ok) show(3);
+});
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  var err = $("err3"); err.textContent = "";
+  var p = picked("product"), r = picked("rating");
+  var prod = PRODUCTS.filter(function (x) { return p && x.key === p.value; })[0];
+  var wantsMail = $("updates").checked, wantsWa = $("wa").checked;
+  var email = $("email").value.trim(), phone = e164($("phone").value);
+  if (wantsMail && !state.record && !validEmail(email)) { err.textContent = "כתבו את המייל שלכם, כדי שנוכל לעדכן."; $("email").focus(); return; }
+  if (wantsWa && !phone) { err.textContent = "בדקו את מספר הנייד לוואטסאפ."; $("phone").focus(); return; }
+  var body = new URLSearchParams();
+  body.set("kind", "feedback");
+  body.set("record_id", state.record);
+  body.set("product", prod ? prod.name : "");
+  body.set("rating", r ? r.value : "");
+  body.set("moment", $("moment").value.trim());
+  body.set("change", $("change").value.trim());
+  body.set("describe", $("describe").value.trim());
+  body.set("updates", wantsMail ? "yes" : "no");
+  body.set("updates_text", text("updatesText"));
+  body.set("email", email);
+  body.set("wa", wantsWa ? "yes" : "no");
+  body.set("wa_text", text("waText"));
+  body.set("phone_e164", wantsWa ? phone : "");
+  body.set("quote", $("quote").checked ? "yes" : "no");
+  body.set("consent_version", CONSENT_VERSION);
+  body.set("source", state.source);
+  body.set("page", location.origin + location.pathname);
+  body.set("submitted_at", new Date().toISOString());
+  var btn = $("send"); btn.disabled = true;
+  post(body).then(function () {
+    state.email = email;
+    $("optin").hidden = wantsMail;
+    $("emailBox2").hidden = !!(state.record || email);
+    show(4);
+  }).catch(function () { btn.disabled = false; err.textContent = "המשוב לא נשלח. בדקו את החיבור ונסו שוב."; });
+});
+
+// מסך התודה: מי שלא סימן מקבל הזדמנות אחת נוספת, בלחיצה.
+$("optinBtn").addEventListener("click", function () {
+  var err = $("err4"); err.textContent = "";
+  var email = state.email || $("email2").value.trim();
+  if (!state.record && !validEmail(email)) { err.textContent = "כתבו את המייל שלכם, כדי שנוכל לעדכן."; $("email2").focus(); return; }
+  var body = new URLSearchParams();
+  body.set("kind", "optin");
+  body.set("record_id", state.record);
+  body.set("email", email);
+  body.set("updates", "yes");
+  body.set("updates_text", text("optinText"));
+  body.set("consent_version", CONSENT_VERSION);
+  body.set("source", "thanks-screen");
+  body.set("page", location.origin + location.pathname);
+  body.set("submitted_at", new Date().toISOString());
+  var btn = this; btn.disabled = true;
+  post(body).then(function () { $("optin").hidden = true; $("optinDone").hidden = false; })
+    .catch(function () { btn.disabled = false; err.textContent = "לא הצלחנו לשמור. נסו שוב."; });
+});
+
+show(1, true);
+</script>
+</body>
+</html>
