@@ -250,7 +250,10 @@ var PRODUCTS = [
   { key: "family-tour",        name: "סיור לכל המשפחה עם מיא",              sub: "חורף 2025–2026", img: "assets/thumb-tour.jpg" },
   { key: "intro-workshop",     name: "סדנת מבוא למבוגרים ונוער עם מיא",     sub: "חורף 2025–2026", img: "assets/thumb-workshop.jpg" },
   { key: "intro-course",       name: "קורס מבוא לממלכת הפטריות",            sub: "חורף 2025–2026", img: "assets/thumb-mini.jpg" },
-  { key: "psychedelic-course", name: "קורס פטריות מרפא והחוויה הפסיכדלית", sub: "חורף 2025–2026", img: "assets/thumb-other.jpg" }
+  { key: "psychedelic-course", name: "קורס פטריות מרפא והחוויה הפסיכדלית", sub: "חורף 2025–2026", img: "assets/thumb-other.jpg" },
+  // 20/10: נוספו אחרי בדיקה מול ההזמנות בוויקס מ-09/2025. סדנת הגידול נמכרה בעונה, ו"משהו אחר" לכל מי שלא מוצא את עצמו.
+  { key: "grow-workshop",      name: "סדנת מבוא לגידול פטריות",             sub: "חורף 2025–2026", img: "assets/thumb-grow.jpg" },
+  { key: "other",              name: "משהו אחר",                             sub: "חוויה אחרת עם מיא", img: "assets/thumb-any.jpg" }
 ];
 
 var form = document.getElementById("f");
@@ -278,7 +281,9 @@ function show(n, first) {
   dots.forEach(function (li, i) {
     var k = i + 1, dot = li.querySelector(".dot");
     li.className = k < n || n === 4 ? "done" : (k === n ? "now" : "");
-    dot.innerHTML = k < n && n !== 4 ? CHECK : String(k);
+    // כשהקורס הגיע מהקישור, שלב 1 לא מוצג והטופס נראה כשלושה שלבים
+    li.hidden = state.skip1 && i === 0;
+    dot.innerHTML = k < n && n !== 4 ? CHECK : String(state.skip1 ? k - 1 : k);
   });
   document.getElementById("tag").hidden = n !== 4;
   if (first) return;
@@ -372,7 +377,7 @@ $("optinBtn").addEventListener("click", function () {
 
 // ?p=<מפתח מוצר> מגיע מהמייל (שדה מותאם באיש הקשר בוויקס): הקורס כבר מסומן, ומתחילים משלב 2.
 var preset = qs.get("p");
-if (preset && PRODUCTS.some(function (x) { return x.key === preset; })) { $("p-" + preset).checked = true; show(2, true); }
+if (preset && PRODUCTS.some(function (x) { return x.key === preset; })) { $("p-" + preset).checked = true; state.skip1 = true; show(2, true); }
 else show(1, true);
 </script>
 </body>
