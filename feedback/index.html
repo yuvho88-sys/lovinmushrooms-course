@@ -179,6 +179,7 @@ textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(
 
     <!-- מסך 4 בסקיצה: תיאור לחבר, השתתפות עתידית, ואישור הציטוט מהפרומפט -->
     <section data-step="3" hidden>
+      <div class="more" id="emailBox" hidden style="margin:0 0 20px"><label for="email">המייל שלכם, כדי שנדע מי כתב</label><input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="name@example.com" dir="ltr"></div>
       <div class="field">
         <label for="describe">איך הייתם מתארים<br>את הקורס לחבר או חברה?</label>
         <textarea id="describe" name="describe" placeholder="בכמה מילים, מה הייתם מספרים?"></textarea>
@@ -187,7 +188,6 @@ textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(
       <fieldset class="choices">
         <legend class="q">האם תרצו להשתתף<br>גם בקורסים או סדנאות עתידיים?</legend>
         <label class="choice consent" for="updates"><input type="checkbox" id="updates" name="updates" value="yes"><span id="updatesText"><b>כן, אשמח שמיא תעדכן אותי במייל על קורסים, סיורים וסדנאות חדשים</b><small>עדכונים שיווקיים מ"להתאהב בפטריות". אפשר להסיר בכל מייל בלחיצה.</small></span></label>
-        <div class="more" id="emailBox" hidden><label for="email">המייל שלכם</label><input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="name@example.com" dir="ltr"></div>
         <label class="choice consent" for="wa"><input type="checkbox" id="wa" name="wa" value="yes"><span id="waText"><b>אשמח לקבל את העדכונים גם בוואטסאפ</b><small>למספר שאמסור כאן. בכל הודעה אפשר להשיב "הסר".</small></span></label>
         <div class="more" id="phoneBox" hidden><label for="phone">נייד לוואטסאפ</label><input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="050-0000000" dir="ltr"></div>
       </fieldset>
@@ -297,8 +297,8 @@ function post(body) {
   // איירטייבל לא מחזיר כותרת CORS, ולכן no-cors: הבקשה נקלטת, אבל התשובה לא קריאה. נכשל רק כשאין רשת.
   return fetch(ENDPOINT, { method: "POST", mode: "no-cors", body: body });
 }
-// המייל נדרש רק ממי שהגיע בלי קישור אישי. מהקישור במייל כבר ידוע מי זה.
-$("updates").addEventListener("change", function () { $("emailBox").hidden = !(this.checked && !state.record); });
+// בלי קישור אישי (למשל מקמפיין של וויקס) המייל הוא מה שמזהה את המשיב, ולכן הוא חובה. עם קישור אישי השדה מוסתר.
+$("emailBox").hidden = !!state.record;
 $("wa").addEventListener("change", function () { $("phoneBox").hidden = !this.checked; });
 
 document.getElementById("next1").addEventListener("click", function () {
@@ -319,7 +319,7 @@ form.addEventListener("submit", function (e) {
   var prod = PRODUCTS.filter(function (x) { return p && x.key === p.value; })[0];
   var wantsMail = $("updates").checked, wantsWa = $("wa").checked;
   var email = $("email").value.trim(), phone = e164($("phone").value);
-  if (wantsMail && !state.record && !validEmail(email)) { err.textContent = "כתבו את המייל שלכם, כדי שנוכל לעדכן."; $("email").focus(); return; }
+  if (!state.record && !validEmail(email)) { err.textContent = "כתבו את המייל שלכם, כדי שנדע מי כתב."; $("email").focus(); return; }
   if (wantsWa && !phone) { err.textContent = "בדקו את מספר הנייד לוואטסאפ."; $("phone").focus(); return; }
   var body = new URLSearchParams();
   body.set("kind", "feedback");
@@ -335,7 +335,8 @@ form.addEventListener("submit", function (e) {
   body.set("wa", wantsWa ? "yes" : "no");
   body.set("wa_text", text("waText"));
   body.set("phone_e164", wantsWa ? phone : "");
-  body.set("quote", $("quote").checked ? "yes" : "no");
+  // נכתב ישר לתיבת הסימון באיירטייבל, ולכן true/false. התשובה האחרונה קובעת.
+  body.set("quote", $("quote").checked ? "true" : "false");
   body.set("consent_version", CONSENT_VERSION);
   body.set("source", state.source);
   body.set("page", location.origin + location.pathname);
